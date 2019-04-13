@@ -50,25 +50,25 @@
     <div class="row">
             <div class="col-md-12">
               <div class="card mb-4">
-                <div class="card-header">Not enough trains for you?</div>
+                <div class="card-header">Not enough trains for you? Well, add one.</div>
                 <div class="card-body">
       
                   <form>
                     <div class="form-group">
-                      <label for="employee-name-input">Train Name</label>
+                      <label for="trainNameInput">Train Name</label>
                       <input class="form-control" id="trainNameInput" placeholder="Thomas the Dank Engine" type="text">
                     </div>
                     <div class="form-group">
-                      <label for="role-input">Destination</label>
+                      <label for="destinationInput">Destination</label>
                       <input class="form-control" id="destinationInput" placeholder="Meme City" type="text">
                     </div>
                     <div class="form-group">
                         <!-- check military time format -->
-                      <label for="start-input">Start time (military)</label>
-                      <input class="form-control" id="startTimeInput" placeholder="05:45" type="time">
+                      <label for="startTimeInput">First Train Arrival Time (military HH:MM)</label>
+                      <input class="form-control" id="startTimeInput" value="05:45" type="time">
                     </div>
                     <div class="form-group">
-                      <label for="rate-input">Train frequency (minutes)</label>
+                      <label for="frequencyInput">Train frequency (minutes)</label>
                       <input class="form-control" id="frequencyInput" placeholder="30" type="number">
                     </div>
                     <button class="btn btn-primary float-right" id="addTrain">Add Train</button>

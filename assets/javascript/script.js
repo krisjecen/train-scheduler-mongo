@@ -1,4 +1,5 @@
 // javascript for train scheduler
+'use strict'
 
 // Initialize Firebase
 var config = {
@@ -20,17 +21,25 @@ var config = {
     event.preventDefault();
 
     // store user input in variables
-    var trainName = document.getElementById("trainNameInput").value.trim();
-    var destination = document.getElementById("destinationInput").value.trim();
-    var startTime = document.getElementById("startTimeInput").value.trim();
-    var frequency = document.getElementById("frequencyInput").value.trim();
+    var inputTrainName = document.getElementById("trainNameInput").value.trim();
+    var inputDestination = document.getElementById("destinationInput").value.trim();
+    var inputFirstTrain = document.getElementById("startTimeInput").value.trim();
+    var inputFrequency = document.getElementById("frequencyInput").value.trim();
 
     var newTrain = {
-        train: trainName,
-        trainDestination: destination,
-        firstTrain: startTime,
-        trainFrequency: frequency
+        train: inputTrainName,
+        trainDestination: inputDestination,
+        firstTrain: inputFirstTrain,
+        trainFrequency: inputFrequency
     };
+
+    database.ref().push(newTrain);
+
+    console.log(newTrain.train);
+    console.log(newTrain.trainDestination);
+    console.log(newTrain.firstTrain);
+    console.log(newTrain.trainFrequency);
+
 
     // clear the form values to allow for easier entry
     document.getElementById("trainNameInput").value = "";
@@ -38,5 +47,40 @@ var config = {
     document.getElementById("startTimeInput").value = "";
     document.getElementById("frequencyInput").value = "";
 
+
+  });
+
+  // each time another child (batch of data, new train in this case) is added to our db...
+  database.ref().on("child_added", function(childSnapshot) {
+    console.log(childSnapshot.val());
+
+    // we are taking data on our new train from our database
+    var newTrainName = childSnapshot.val().train;
+    var newTrainDestination = childSnapshot.val().trainDestination
+    var newFirstTrain = childSnapshot.val().firstTrain;
+    var newTrainFrequency = childSnapshot.val().trainFrequency;
+
+    // create an object to store our firebase data
+    let newTraindata = {
+        name: newTrainName,
+        destination: newTrainDestination,
+        firstTrain: newFirstTrain,
+        frequency: newTrainFrequency
+    };
+
+    // parse data, momentJS
+
+    //create a new row for our table
+    var newScheduleRow = document.createElement("tr");
+
+    // loop through our newly added train data and add it into our schedule table
+    for (let traindata of Object.values(newTraindata)) {
+        let newTd = document.createElement("td");
+        newTd.textContent = traindata;
+        newScheduleRow.appendChild(newTd);
+    }
+
+    // add our data to our train schedule by appending the new row
+    document.querySelector("#trainScheduleTable > tbody").appendChild(newScheduleRow);
 
   });
