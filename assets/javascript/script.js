@@ -60,12 +60,31 @@ var config = {
     var newFirstTrain = childSnapshot.val().firstTrain;
     var newTrainFrequency = childSnapshot.val().trainFrequency;
 
+    /* we need to create additional variables for our next arriving train
+    and minutes away that will be calculated from our first train and train
+    frequency data
+    */
+
+    // temp values to test display
+    var newNextArrival = "12:40";
+    var newMinutesAway = "40";
+
+
+
+    /* we will not include the firstTrain value as it is
+    in our table, but we will use the value to calculate when
+    the next train is arriving
+    */
+    //firstTrain: newFirstTrain
+
+
     // create an object to store our firebase data
     let newTraindata = {
         name: newTrainName,
         destination: newTrainDestination,
-        firstTrain: newFirstTrain,
-        frequency: newTrainFrequency
+        frequency: newTrainFrequency,
+        nextArrival: newNextArrival,
+        minutesAway: newMinutesAway
     };
 
     // parse data, momentJS
