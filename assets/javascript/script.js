@@ -93,7 +93,7 @@ var config = {
     var minUntilNextTrain = newTrainFrequency - minSinceLastTrain;
     console.log('the next train is ' + minUntilNextTrain + ' minutes away');
 
-    var newNextArrival = moment().add(minUntilNextTrain, 'minutes').format('hh:mm');
+    var newNextArrival = moment().add(minUntilNextTrain, 'minutes').format('hh:mm a');
     console.log('the next train will arrive at ' + newNextArrival);
 
 
