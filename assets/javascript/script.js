@@ -74,9 +74,6 @@ var config = {
 
     // var rightNow = moment().format("MM/DD/YYYY");
     // var nextTrainTesting = moment().add(15, 'days').format('MM/DD/YYYY');
-    // console.log(rightNow);
-    // console.log(nextTrainTesting);
-    // console.log(moment().diff(nextTrainTesting, 'days'));
 
     var rightNow2 = moment().format("MM/DD/YYYY hh:mm a");
     var nextTrainTesting2 = moment().add(newTrainFrequency, 'minutes').format('MM/DD/YYYY hh:mm a');
@@ -84,11 +81,6 @@ var config = {
     console.log(nextTrainTesting2);
     console.log(-moment().diff(nextTrainTesting2, 'minutes'));
 
-    // temp values to test display
-    var newNextArrival = "12:40";
-    // var newMinutesAway = "40";
-
-    // var testingMDY = moment().format('MM/DD/YYYY')
     // now we are bringing in our "full date/time" variable value into our time calculation
     var testFirstTrainTime = moment(`${newFirstTrainDateTime}`).format('MM/DD/YYYY hh:mm a');
     console.log(testFirstTrainTime);
@@ -101,12 +93,8 @@ var config = {
     var minUntilNextTrain = newTrainFrequency - minSinceLastTrain;
     console.log('the next train is ' + minUntilNextTrain + ' minutes away');
 
-
-    /* we will not include the firstTrain value as it is
-    in our table, but we will use the value to calculate when
-    the next train is arriving
-    */
-    //firstTrain: newFirstTrain
+    var newNextArrival = moment().add(minUntilNextTrain, 'minutes').format('hh:mm');
+    console.log('the next train will arrive at ' + newNextArrival);
 
 
     // create an object to store our firebase data
