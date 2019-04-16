@@ -26,6 +26,7 @@ var config = {
     var inputFirstTrain = document.getElementById("startTimeInput").value.trim();
     var inputFrequency = document.getElementById("frequencyInput").value.trim();
 
+    
     var newTrain = {
         train: inputTrainName,
         trainDestination: inputDestination,
@@ -56,7 +57,7 @@ var config = {
 
     // we are taking data on our new train from our database
     var newTrainName = childSnapshot.val().train;
-    var newTrainDestination = childSnapshot.val().trainDestination
+    var newTrainDestination = childSnapshot.val().trainDestination;
     var newFirstTrain = childSnapshot.val().firstTrain;
     var newTrainFrequency = childSnapshot.val().trainFrequency;
 
@@ -65,10 +66,40 @@ var config = {
     frequency data
     */
 
+    // convert the inputFirstTrain to MM/DD/YYYY hh:mm ??
+    // need to use the current date
+    var todayMonthDayYear = moment().format("MM/DD/YYYY");
+    // adding the date to the first train time so it can be used in time calculations
+    var newFirstTrainDateTime = `${todayMonthDayYear} ${newFirstTrain}`;
+
+    // var rightNow = moment().format("MM/DD/YYYY");
+    // var nextTrainTesting = moment().add(15, 'days').format('MM/DD/YYYY');
+    // console.log(rightNow);
+    // console.log(nextTrainTesting);
+    // console.log(moment().diff(nextTrainTesting, 'days'));
+
+    var rightNow2 = moment().format("MM/DD/YYYY hh:mm a");
+    var nextTrainTesting2 = moment().add(newTrainFrequency, 'minutes').format('MM/DD/YYYY hh:mm a');
+    console.log(rightNow2);
+    console.log(nextTrainTesting2);
+    console.log(-moment().diff(nextTrainTesting2, 'minutes'));
+
     // temp values to test display
     var newNextArrival = "12:40";
-    var newMinutesAway = "40";
+    // var newMinutesAway = "40";
 
+    // var testingMDY = moment().format('MM/DD/YYYY')
+    // now we are bringing in our "full date/time" variable value into our time calculation
+    var testFirstTrainTime = moment(`${newFirstTrainDateTime}`).format('MM/DD/YYYY hh:mm a');
+    console.log(testFirstTrainTime);
+    var minutesSinceFirstTrain = moment().diff(newFirstTrainDateTime, 'minutes');
+    console.log(minutesSinceFirstTrain + " minutes since first train");
+    // var testingFrequency = 10;
+    var minSinceLastTrain = minutesSinceFirstTrain % newTrainFrequency;
+    console.log(minSinceLastTrain + " minutes since the most recent train");
+
+    var minUntilNextTrain = newTrainFrequency - minSinceLastTrain;
+    console.log('the next train is ' + minUntilNextTrain + ' minutes away');
 
 
     /* we will not include the firstTrain value as it is
@@ -84,7 +115,7 @@ var config = {
         destination: newTrainDestination,
         frequency: newTrainFrequency,
         nextArrival: newNextArrival,
-        minutesAway: newMinutesAway
+        minutesAway: minUntilNextTrain
     };
 
     // parse data, momentJS
