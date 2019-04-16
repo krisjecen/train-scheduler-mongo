@@ -26,21 +26,15 @@ var config = {
     var inputFirstTrain = document.getElementById("startTimeInput").value.trim();
     var inputFrequency = document.getElementById("frequencyInput").value.trim();
 
-    
+    // create a new object for our train data -- we will store it in our database
     var newTrain = {
         train: inputTrainName,
         trainDestination: inputDestination,
         firstTrain: inputFirstTrain,
         trainFrequency: inputFrequency
     };
-
+    // add our train data into the database
     database.ref().push(newTrain);
-
-    console.log(newTrain.train);
-    console.log(newTrain.trainDestination);
-    console.log(newTrain.firstTrain);
-    console.log(newTrain.trainFrequency);
-
 
     // clear the form values to allow for easier entry
     document.getElementById("trainNameInput").value = "";
@@ -53,7 +47,6 @@ var config = {
 
   // each time another child (batch of data, new train in this case) is added to our db...
   database.ref().on("child_added", function(childSnapshot) {
-    console.log(childSnapshot.val());
 
     // we are taking data on our new train from our database
     var newTrainName = childSnapshot.val().train;
@@ -66,38 +59,24 @@ var config = {
     frequency data
     */
 
-    // convert the inputFirstTrain to MM/DD/YYYY hh:mm ??
-    // need to use the current date
+    // need to use moment to generate the current date
     var todayMonthDayYear = moment().format("MM/DD/YYYY");
     // adding the date to the first train time so it can be used in time calculations
     var newFirstTrainDateTime = `${todayMonthDayYear} ${newFirstTrain}`;
-
-    // var rightNow = moment().format("MM/DD/YYYY");
-    // var nextTrainTesting = moment().add(15, 'days').format('MM/DD/YYYY');
-
-    var rightNow2 = moment().format("MM/DD/YYYY hh:mm a");
-    var nextTrainTesting2 = moment().add(newTrainFrequency, 'minutes').format('MM/DD/YYYY hh:mm a');
-    console.log(rightNow2);
-    console.log(nextTrainTesting2);
-    console.log(-moment().diff(nextTrainTesting2, 'minutes'));
-
-    // now we are bringing in our "full date/time" variable value into our time calculation
-    var testFirstTrainTime = moment(`${newFirstTrainDateTime}`).format('MM/DD/YYYY hh:mm a');
-    console.log(testFirstTrainTime);
+    // how many minutes have elapsed since the first train of the day?
     var minutesSinceFirstTrain = moment().diff(newFirstTrainDateTime, 'minutes');
-    console.log(minutesSinceFirstTrain + " minutes since first train");
-    // var testingFrequency = 10;
+    /* we can divide the minutes elapsed by the train's frequency and the remainder
+    will be the number of minutes since the last (most recent) train arrived for that train line
+    */
     var minSinceLastTrain = minutesSinceFirstTrain % newTrainFrequency;
-    console.log(minSinceLastTrain + " minutes since the most recent train");
-
+    // now we can determine how long it will be until the next train arrives
     var minUntilNextTrain = newTrainFrequency - minSinceLastTrain;
-    console.log('the next train is ' + minUntilNextTrain + ' minutes away');
-
+    // and we can add that number of minutes to the current time and display the next train's arrival time
     var newNextArrival = moment().add(minUntilNextTrain, 'minutes').format('hh:mm a');
-    console.log('the next train will arrive at ' + newNextArrival);
 
-
-    // create an object to store our firebase data
+    /* create an object to store our firebase data along with the data we've generated from our
+    train frequency & first arrival times
+    */
     let newTraindata = {
         name: newTrainName,
         destination: newTrainDestination,
@@ -105,8 +84,6 @@ var config = {
         nextArrival: newNextArrival,
         minutesAway: minUntilNextTrain
     };
-
-    // parse data, momentJS
 
     //create a new row for our table
     var newScheduleRow = document.createElement("tr");
