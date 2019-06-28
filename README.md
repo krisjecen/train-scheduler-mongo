@@ -1,5 +1,7 @@
 # train-scheduler
-With the help of Firebase, this Train Scheduler displays train arrival data and allows for additional train data entries from users.
+(this app is in under construction!)
+
+With the help of mongoDB, this Train Scheduler displays train arrival data and allows for additional train data entries from users.
 
 You can view the current train destinations, frequencies, and see when the next trains will arrive, including how many minutes you have for grabbing a drink before you catch your train.
 
