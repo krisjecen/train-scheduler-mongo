@@ -1,12 +1,21 @@
 // Dependencies
 var express = require('express')
 var mongojs = require('mongojs')
+// var bodyParser = require('body-parser')
 
 // Initialize Express
 var app = express()
 
+// Parse request body as JSON
+app.use(express.urlencoded({ extended: true }))
+app.use(express.json())
+
 // Set up a static folder (public) for our web app
 app.use(express.static('public'))
+
+
+// use the bodyParser
+// app.use(bodyParser())
 
 // Database configuration
 // Save the URL of our database as well as the name of our collection
@@ -23,9 +32,9 @@ db.on('error', function (error) {
 
 // Routes
 // 1. At the root path, send a simple hello world message to the browser
-app.get('/', function (req, res) {
-  res.send('Hello world')
-})
+// app.get('/', function (req, res) {
+//   res.send('Hello world')
+// })
 
 // 2. At the "/all" path, display every entry in the trains collection
 app.get('/all', function (req, res) {
@@ -39,6 +48,23 @@ app.get('/all', function (req, res) {
     else {
       console.log('we found things!')
       res.json(found)
+    }
+  })
+})
+
+// Handle form submission, save submission to mongo
+app.post('/submit', function (req, res) {
+  console.log(req.body)
+  // Insert the note into the notes collection
+  db.trains.insert(req.body, function (error, saved) {
+    // Log any errors
+    if (error) {
+      console.log(error)
+    } else {
+      // Otherwise, send the note back to the browser
+      // This will fire off the success function of the ajax request
+      console.log('new train was added to the db')
+      // res.send(saved)
     }
   })
 })
