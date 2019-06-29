@@ -9,4 +9,4 @@ Add a train by filling in the form at the bottom of the page and clicking the "A
 
 Future features, coming soon: edit & remove train schedule entries so the schedule stays neat and up to date!
 
-This site uses Firebase, JavaScript, and MomentJS.
+This site uses mongoDB, JavaScript, and MomentJS.
