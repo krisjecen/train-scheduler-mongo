@@ -64,7 +64,7 @@ app.post('/submit', function (req, res) {
       // Otherwise, send the note back to the browser
       // This will fire off the success function of the ajax request
       console.log('new train was added to the db')
-      // res.send(saved)
+      res.send(saved)
     }
   })
 })
