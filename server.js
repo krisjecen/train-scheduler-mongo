@@ -12,7 +12,7 @@ const CONNECTION_URI = process.env.MONGODB_URI || 'mongodb://localhost/trainsche
 Mongoose.Promise = global.Promise
 Mongoose.set('debug', true)
 
-Mongoose.connect('mongodb://localhost/trainscheduler_db', {useNewUrlParser: true})
+Mongoose.connect(CONNECTION_URI, { useNewUrlParser: true })
   .then(() => {
     console.log('Connected to MongoDB.')
   })
@@ -54,9 +54,8 @@ app.get('/all', function (req, res) {
     // Log any errors if the server encounters one
     if (error) {
       console.log(error)
-    }
-    // Otherwise, send the result of this query to the browser
-    else {
+    } else {
+      // Otherwise, send the result of this query to the browser
       console.log('we found things!')
       res.json(found)
     }
