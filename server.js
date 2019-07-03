@@ -1,10 +1,22 @@
 // Dependencies
 var express = require('express')
 var mongojs = require('mongojs')
-// var bodyParser = require('body-parser')
+const Mongoose = require('mongoose')
 
 // Initialize Express
 var app = express()
+const PORT = process.env.PORT || 3000
+
+// mongoose setup
+const CONNECTION_URI = process.env.MONGODB_URI || 'mongodb://localhost/trainscheduler_db'
+Mongoose.Promise = global.Promise
+Mongoose.set('debug', true)
+
+Mongoose.connect('mongodb://localhost/trainscheduler_db', {useNewUrlParser: true})
+  .then(() => {
+    console.log('Connected to MongoDB.')
+  })
+  .catch(err => console.log(err))
 
 // Parse request body as JSON
 app.use(express.urlencoded({ extended: true }))
@@ -12,7 +24,6 @@ app.use(express.json())
 
 // Set up a static folder (public) for our web app
 app.use(express.static('public'))
-
 
 // use the bodyParser
 // app.use(bodyParser())
@@ -23,7 +34,7 @@ var databaseUrl = 'trainscheduler_db'
 var collections = ['trains']
 
 // Use mongojs to hook the database to the db variable
-var db = mongojs(databaseUrl, collections)
+var db = mongojs(databaseUrl, collections) || process.env.MONGODB_URI
 
 // This makes sure that any errors are logged if mongodb runs into an issue
 db.on('error', function (error) {
@@ -69,39 +80,7 @@ app.post('/submit', function (req, res) {
   })
 })
 
-// 3. At the "/name" path, display every entry in the trains collection, sorted by name
-// app.get('/name', function (req, res) {
-//   // Query: In our database, go to the trains collection, then "find" everything,
-//   // but this time, sort it by name (1 means ascending order)
-//   db.trains.find().sort({ name: 1 }, function (error, found) {
-//     // Log any errors if the server encounters one
-//     if (error) {
-//       console.log(error)
-//     }
-//     // Otherwise, send the result of this query to the browser
-//     else {
-//       res.json(found)
-//     }
-//   })
-// })
-
-// 4. At the "/weight" path, display every entry in the trains collection, sorted by weight
-// app.get('/weight', function (req, res) {
-//   // Query: In our database, go to the trains collection, then "find" everything,
-//   // but this time, sort it by weight (-1 means descending order)
-//   db.trains.find().sort({ weight: -1 }, function (error, found) {
-//     // Log any errors if the server encounters one
-//     if (error) {
-//       console.log(error)
-//     }
-//     // Otherwise, send the result of this query to the browser
-//     else {
-//       res.json(found)
-//     }
-//   })
-// })
-
 // Set the app to listen on port 3000
-app.listen(3000, function () {
-  console.log('App running on port 3000!')
+app.listen(PORT, function () {
+  console.log(`App running on ${PORT}!`)
 })
