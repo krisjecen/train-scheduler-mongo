@@ -1,5 +1,5 @@
 # train-scheduler
-(this app is in under construction!)
+(this app is in under construction and almost done!)
 
 With the help of mongoDB, this Train Scheduler displays train arrival data and allows for additional train data entries from users.
 
